@@ -23,3 +23,43 @@ project:
           Calculates the CO2 emissions avoided using renewable energy.
         calculations:
           -conversion_factor: Amount of CO2 offset per kWh (e.g/, 0.85 kg CO2/kwh for solar energy)
+          - cumulative_offset: Total offset over time.
+    - Forecasting Energy Production:
+        description: |
+          Uses weather data to predict energy production for solar panels and wind turbines.
+        integrations:
+          - weather_api: Fetches real-time and forecasted weather data.
+          - solar_factors: Sunlight hours, cloud cover.
+          - wind_factors: Wind speed, air density
+    - User Interaction:
+        description: |
+        Provides endpoints for users to:
+          - view production/consumption metrics.
+          - Track carbon offsets.
+          - Get energy forecasts.
+        example_endpoints:
+        - /metrics
+        - /forecast: Predicts energy production for upcoming days.
+    - Data Simulation:
+        description: |
+          Simulates IoT devices and energy data streams for testing.
+        simulation_logic:
+          - solar_panels:
+              conditions:
+                - daytime: Higher production.
+                - cloudy: Reduced production.
+          - wind_turbines:
+              conditions:
+                - high_wind_speed: Higher production.
+                - low_wind_speed: Reduced production.
+          - output_example:
+              - device_id: solar_panel_001
+              - timestamp: 2025-01-28T09:00:00Z
+              - energy_produced_kwh: 3.2
+  potential_extensions:
+    - Energy Storage Simulation:
+        description: Tracks stored energy in batteries and surplus usage.
+    - Alerts and Notifications:
+        description: Sends alerts for thresholds like low production or high consumption.
+    - Grid Integration:
+        description: Simulates energy flow to/from the grid based on surplus or deficit.
