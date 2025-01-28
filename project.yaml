@@ -1,0 +1,25 @@
+project:
+  name: Renewable Energy Monitoring API
+  description: |
+    An API to track and monitor renewable energy production and consumption from various sources (e.g., solar panels, wind turbines)
+    It provides real-time metrics, tracks carbon offsets, and forecasts energy production based on weather data.
+  features:
+    - Data Submission:
+        description: |
+          Simulates data from IoT devices such as solar panels and wind turbines.
+        simulated data:
+          - device_id: Unique identifier for each device.
+          - timestamp: Timestamp of each submission.
+          - energy_produced_kwh: Energy produced in kilowatt-hours.
+    -Real-Time Metrics:
+        description: |
+          Provides real-time insights into energy production and consumption.
+        metrics:
+          - total_energy_produced: Total energy generated over time.
+          - total_energy_consumed: Total energy consumed.
+          - net_energy_balance: Energy surplus (production - consumption).
+    - Carbon Offset Tracking:
+        description: |
+          Calculates the CO2 emissions avoided using renewable energy.
+        calculations:
+          -conversion_factor: Amount of CO2 offset per kWh (e.g/, 0.85 kg CO2/kwh for solar energy)
