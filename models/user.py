@@ -20,6 +20,7 @@ class User(db.Model):
 
     ##Relationships (to be written)
     energy_consumption = db.relationship('energy_onsumption', back_populates='users', cascade='all, delete-orphan')
+    energy_production = db.relationship('energy_production', back_populates="users", cascade="all, delete-orphan")
 
     @property
     def password_hash(self):
