@@ -18,6 +18,9 @@ class User(db.Model):
     image_url = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
+    ##Relationships (to be written)
+    energy_consumption = db.relationship('energy_onsumption', back_populates='users', cascade='all, delete-orphan')
+
     @property
     def password_hash(self):
         raise AttributeError("Password hashes cannot be viewed")
@@ -62,4 +65,4 @@ class User(db.Model):
         }
 
     def __repr__(self):
-        return f"User {self.username}, ID: {self.id}>"
+        return f"<User {self.username}, ID: {self.id}>"

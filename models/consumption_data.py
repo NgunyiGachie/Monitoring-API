@@ -1,13 +1,34 @@
-"""
-Develop an API that tracks and monitors renewable energy production and consumption from various sources(e.g., solar panels, wind turbines)
+from ..database import db
+from datetime import datetime
+from sqlalchemy.orm import validates
 
-Features:
-Collect data from IoT devices (Simulate using JSON files or databases)
-Provide real-time metrics on energy production and usage
-Offer endpoints for users to track their carbon offset
-Integrate APIs like OpenWeather for forecasting energy production
-"""
+class EnergyConsumption(db.Model):
+    __tablename__="energy_consumption"
 
-"""
-Tracks energy consumption
-"""
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    amount = db.Column(db.Float)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+
+    @validates("amount")
+    def validate_amount(self, value):
+        if not isinstance(value, float):
+            raise ValueError("Amount must be a float")
+        return value
+
+    @validates("timestamp")
+    def validate_timestamp(self, value):
+        if value > datetime.now():
+            raise ValueError("Timestamp cannot be in the future")
+        return value
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'amount': self.amount,
+            'time_stamp': self.timestamp
+        }
+
+    def __repr__(self):
+        return f"<EnergyConsumption {self.id}>"
