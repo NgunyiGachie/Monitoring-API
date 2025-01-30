@@ -18,7 +18,6 @@ class User(db.Model):
     image_url = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
-    ##Relationships (to be written)
     energy_consumption = db.relationship('energy_onsumption', back_populates='users', cascade='all, delete-orphan')
     energy_production = db.relationship('energy_production', back_populates="users", cascade="all, delete-orphan")
 
