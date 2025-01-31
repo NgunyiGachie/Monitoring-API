@@ -1,4 +1,4 @@
-from ..database import db
+from database import db
 from datetime import datetime
 from sqlalchemy.orm import validates
 
@@ -9,6 +9,8 @@ class EnergyConsumption(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     amount = db.Column(db.Float)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+
+    user = db.relationship("User", back_populates="energy_consumption")
 
     @validates("amount")
     def validate_amount(self, value):

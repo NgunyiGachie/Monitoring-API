@@ -1,12 +1,9 @@
-"""
-Tracks user information and preferences for carbon offset calculations
-"""
-from ..database import db
+from database import db
 from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError
 from sqlalchemy.orm import validates
 
-ph = PasswordHasher
+ph = PasswordHasher()
 
 class User(db.Model):
     __tablename__= "users"
@@ -18,8 +15,8 @@ class User(db.Model):
     image_url = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
-    energy_consumption = db.relationship('energy_onsumption', back_populates='users', cascade='all, delete-orphan')
-    energy_production = db.relationship('energy_production', back_populates="users", cascade="all, delete-orphan")
+    energy_consumption = db.relationship('EnergyConsumption', back_populates='users', cascade='all, delete-orphan')
+    energy_production = db.relationship('EnergyProduction', back_populates="users", cascade="all, delete-orphan")
 
     @property
     def password_hash(self):

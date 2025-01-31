@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from config import config
 from database import db
 
 app = Flask(__name__)

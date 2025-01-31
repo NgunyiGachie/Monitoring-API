@@ -1,7 +1,4 @@
-"""
-Tracks energy consumption
-"""
-from ..database import db
+from database import db
 from sqlalchemy.orm import validates
 from datetime import datetime
 
@@ -13,6 +10,8 @@ class EnergyProduction(db.Model):
     source = db.Column(db.String, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship("User", back_populates="energy_production")
 
     @validates('amount')
     def validate_amount(self, value):
