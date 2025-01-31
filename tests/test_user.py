@@ -6,7 +6,16 @@ from app import app
 from database import db
 from models.user import User
 
-ph = PasswordHasher
+ph = PasswordHasher()
+
+@pytest.fixture(scope='function', autouse=True)
+def setup_database():
+    """Fixture to set up and clean up the database before each test."""
+    with app.app_context():
+        db.create_all()
+        yield
+        db.session.rollback()
+        db.session.close()
 
 class TestUser:
     """Test case for the User model"""
@@ -14,7 +23,7 @@ class TestUser:
     def test_has_attributes(self):
         """Test that the User model has the required attributes"""
         with app.app_context():
-            User.query.delete()
+            db.session.execute(db.delete(User))
             db.session.commit()
 
             user = User(
@@ -25,7 +34,7 @@ class TestUser:
             )
             user.password_hash = ph.hash('thewerewolfmaniam')
             db.session.add(user)
-            db.session.commmit()
+            db.session.commit()
 
             created_user = User.query.filter(User.username == 'antony').first()
             assert created_user.username == 'antony'
