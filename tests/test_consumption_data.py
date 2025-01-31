@@ -16,15 +16,15 @@ class TestConsumption:
 
             energy_consumption = EnergyConsumption(
                 user_id = 1,
-                amount = '20.4',
+                amount = 20.5,
                 timestamp = datetime(2025, 1, 1)
             )
             db.session.add(energy_consumption)
             db.session.commit()
 
-            created_energy_consumption = EnergyConsumption.query.filter(EnergyConsumption.amount == '20.5').first()
+            created_energy_consumption = EnergyConsumption.query.filter(EnergyConsumption.amount == 20.5 ).first()
             assert created_energy_consumption.user_id == 1
-            assert created_energy_consumption.amount == '20.4'
+            assert created_energy_consumption.amount == 20.5
             assert created_energy_consumption.timestamp == datetime(2025, 1,1)
 
     def test_requires_user_id(self):
@@ -34,7 +34,7 @@ class TestConsumption:
             db.session.commit()
 
             energy_consumption = EnergyConsumption(
-                amount = '20.4',
+                amount = 20.5,
                 timestamp = datetime(2025, 1, 1)
             )
             with pytest.raises(IntegrityError):
@@ -63,7 +63,7 @@ class TestConsumption:
 
             energy_consumption = EnergyConsumption(
                 user_id = 1,
-                amount = '20.4',
+                amount = 20.4,
             )
             with pytest.raises(IntegrityError):
                 db.session.add(energy_consumption)
