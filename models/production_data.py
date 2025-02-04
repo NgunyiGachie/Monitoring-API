@@ -6,7 +6,7 @@ class EnergyProduction(db.Model):
     __tablename__="energy_production"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     source = db.Column(db.String, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
@@ -21,7 +21,7 @@ class EnergyProduction(db.Model):
 
     @validates("timestamp")
     def validate_timestamp(self, value):
-        if value > datetime.now():
+        if value > datetime.utcnow():
             raise ValueError("Timestamp cannot be in the future")
         return value
 

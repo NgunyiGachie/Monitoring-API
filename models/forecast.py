@@ -8,7 +8,7 @@ class Forecast(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     source = db.Column(db.String, nullable=False)
     forecast_amount = db.Column(db.Float, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     @validates("source")
     def validate_source(self, value):

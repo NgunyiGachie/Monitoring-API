@@ -6,9 +6,9 @@ class EnergyConsumption(db.Model):
     __tablename__="energy_consumption"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     amount = db.Column(db.Float)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship("User", back_populates="energy_consumption")
 
@@ -29,7 +29,7 @@ class EnergyConsumption(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'amount': self.amount,
-            'time_stamp': self.timestamp
+            'timestamp': self.timestamp
         }
 
     def __repr__(self):
