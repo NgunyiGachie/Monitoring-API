@@ -39,3 +39,27 @@ with app.app_context():
     db.session.add_all(users)
     db.session.commit()
     print(f"{len(users)} users added")
+
+    # Seed consumption
+    consumption = [
+        EnergyConsumption(
+            user_id = 1,
+            amount = 20.5,
+            timestamp = datetime(2025, 1, 1),
+        ),
+        EnergyConsumption(
+            user_id = 2,
+            amount = 25.4,
+            timestamp = datetime(2025, 1, 1)
+        )
+    ]
+    try:
+        print("Adding energy consumption to the database....")
+        db.session.add_all(consumption)
+        db.session.commit()
+        print(f"{len(consumption)} consumption added")
+    except Exception as e:
+        db.session.rollback()
+        print(f"An error occurred: {e}")
+    finally:
+        db.session.close()
