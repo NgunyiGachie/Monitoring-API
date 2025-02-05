@@ -7,6 +7,9 @@ def generate_key():
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', generate_key())
+    if SECRET_KEY == generate_key():
+        print("Warning: Using a generated SECRET_KEY. Please set SECRET_KEY in the environment.")
+
     PROPAGATE_EXCEPTIONS = True
     API_TITLE = "Renewable Energy Monitoring API"
     API_VERSION = "V1"
@@ -29,7 +32,7 @@ class DevelopmentConfig(Config):
         return "<DevelopmentConfig>"
 
 class TestingConfig(Config):
-    Testing = True
+    TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory'
 
     def __repr__(self):
