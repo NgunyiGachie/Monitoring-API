@@ -87,3 +87,29 @@ with app.app_context():
         print(f"An error occurred: {e}")
     finally:
         db.session.close()
+
+    # Seed production
+    productions = [
+        EnergyProduction(
+            user_id = 1,
+            source = 'wind',
+            amount = 20,
+            timestamp = datetime(2025, 1, 1)
+        ),
+        EnergyProduction(
+            user_id = 2,
+            source = 'sun',
+            amount = 10.5,
+            timestamp = datetime(2025, 1, 2)
+        )
+    ]
+    try:
+        print("Adding production to the database....")
+        db.session.add_all(productions)
+        db.session.commit()
+        print(f"{len(productions)} production added")
+    except Exception as e:
+        db.session.rollback()
+        print(f"An error occurred: {e}")
+    finally:
+        db.session.close()
