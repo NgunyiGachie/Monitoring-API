@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_migrate import Migrate
 from config import config
 from database import db
 
@@ -9,6 +10,7 @@ config_name = os.getenv("FLASK_CONFIG", "default")
 app.config.from_object(config[config_name])
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 if __name__ == '__main__':
     try:
