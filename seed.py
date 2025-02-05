@@ -63,3 +63,27 @@ with app.app_context():
         print(f"An error occurred: {e}")
     finally:
         db.session.close()
+
+    # seed forecast
+    forecasts = [
+        Forecast(
+            source = 'wind',
+            forecast_amount = 20.5,
+            timestamp = datetime(2025, 2, 1)
+        ),
+        Forecast(
+            source = 'sun',
+            forecast_amount = 11.9,
+            timestamp = datetime(2024, 12, 12)
+        )
+    ]
+    try:
+        print("Adding forecast to the database....")
+        db.session.add_all(forecasts)
+        db.session.commit()
+        print(f"{len(forecasts)} forecast added")
+    except Exception as e:
+        db.session.rollback()
+        print(f"An error occurred: {e}")
+    finally:
+        db.session.close()
