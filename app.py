@@ -3,6 +3,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from config import config
 from database import db
+from models import User, EnergyConsumption, EnergyProduction, Forecast
 
 app = Flask(__name__)
 
