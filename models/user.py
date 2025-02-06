@@ -15,8 +15,8 @@ class User(db.Model):
     image_url = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
-    energy_consumption = db.relationship('EnergyConsumption', back_populates='users', cascade='all, delete-orphan')
-    energy_production = db.relationship('EnergyProduction', back_populates="users", cascade="all, delete-orphan")
+    energy_consumption = db.relationship('EnergyConsumption', back_populates='user', cascade='all, delete-orphan')
+    energy_production = db.relationship('EnergyProduction', back_populates="user", cascade="all, delete-orphan")
 
     @property
     def password_hash(self):

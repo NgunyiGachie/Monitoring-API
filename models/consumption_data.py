@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import validates
 
 class EnergyConsumption(db.Model):
-    __tablename__="energy_consumption"
+    __tablename__="energy_consumptions"
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
