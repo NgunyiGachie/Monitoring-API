@@ -13,13 +13,13 @@ class EnergyConsumption(db.Model):
     user = db.relationship("User", back_populates="energy_consumption")
 
     @validates("amount")
-    def validate_amount(self, value):
+    def validate_amount(self, key, value):
         if not isinstance(value, float):
             raise ValueError("Amount must be a float")
         return value
 
     @validates("timestamp")
-    def validate_timestamp(self, value):
+    def validate_timestamp(self, key, value):
         if value > datetime.now():
             raise ValueError("Timestamp cannot be in the future")
         return value
