@@ -14,19 +14,23 @@ class EnergyProduction(db.Model):
     user = db.relationship("User", back_populates="energy_production")
 
     @validates('amount')
-    def validate_amount(self, value):
-        if not isinstance(value, float):
+    def validate_amount(self, key, value):
+        try:
+            value - float(value)
+            if value <= 0:
+                raise ValueError("Amount must be a positive float")
+        except (TypeError, ValueError):
             raise ValueError("Amount must be a float")
         return value
 
     @validates("timestamp")
-    def validate_timestamp(self, value):
+    def validate_timestamp(self, key, value):
         if value > datetime.utcnow():
             raise ValueError("Timestamp cannot be in the future")
         return value
 
     @validates('source')
-    def validate_source(self, value):
+    def validate_source(self, key, value):
         if not isinstance(value, str):
             raise ValueError("Source must be a string")
         return value
