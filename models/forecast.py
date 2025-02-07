@@ -11,19 +11,19 @@ class Forecast(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     @validates("source")
-    def validate_source(self, value):
+    def validate_source(self, key, value):
         if not isinstance(value, str):
             raise ValueError("Source must be a string")
         return value
 
     @validates("forecast_amount")
-    def validate_forecast_amount(self, value):
+    def validate_forecast_amount(self, key, value):
         if not isinstance(value, float):
             raise ValueError("Forecast amount must be a float")
         return value
 
     @validates("timestamp")
-    def validate_timestamp(self, value):
+    def validate_timestamp(self, key, value):
         if value > datetime.utcnow():
             raise ValueError("Datetime cannot be in the future")
         return value
