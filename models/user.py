@@ -34,7 +34,7 @@ class User(db.Model):
             return False
 
     @validates("username")
-    def validate_username(self, username):
+    def validate_username(self, key, username):
         if not username:
             raise AssertionError("No username provided")
         if User.query.filter(User.username == username).first():
@@ -44,7 +44,7 @@ class User(db.Model):
         return username
 
     @validates("email")
-    def validate_email(self, email):
+    def validate_email(self, key, email):
         if not email:
             raise AssertionError("No email provided")
         if User.query.filter(User.email == email).first():
