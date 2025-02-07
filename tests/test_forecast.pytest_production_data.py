@@ -5,6 +5,15 @@ from app import app
 from database import db
 from models.forecast import Forecast
 
+@pytest.fixture(scope='function', autouse=True)
+def setup_database():
+    """Fixture to set up and clean up the database before each test."""
+    with app.app_context():
+        db.create_all()
+        yield
+        db.session.rollback()
+        db.session.close()
+
 class TestForecast:
     """Test case for the Forecast model"""
 

@@ -5,6 +5,15 @@ from app import app
 from database import db
 from models.production_data import EnergyProduction
 
+@pytest.fixture(scope='function', autouse=True)
+def setup_database():
+    """Fixture to set up and clean up the database before each test."""
+    with app.app_context():
+        db.create_all()
+        yield
+        db.session.rollback()
+        db.session.close()
+
 class TestProduction:
     """Test case for the EnergyProduction model"""
 
