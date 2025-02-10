@@ -9,10 +9,10 @@ from models.production_data import EnergyProduction
 def setup_database():
     """Fixture to set up and clean up the database before each test."""
     with app.app_context():
+        db.drop_all()
         db.create_all()
         yield
-        db.session.rollback()
-        db.session.close()
+        db.session.remove()
 
 class TestProduction:
     """Test case for the EnergyProduction model"""
@@ -20,9 +20,6 @@ class TestProduction:
     def test_has_attributes(self):
         """Test that the EnergyProduction model has the required attributes"""
         with app.app_context():
-            EnergyProduction.query.delete()
-            db.session.commit()
-
             energy_production = EnergyProduction(
                 user_id = 1,
                 source = 'wind',
@@ -41,9 +38,6 @@ class TestProduction:
     def test_has_user_id(self):
         """Test that a user_id is required"""
         with app.app_context():
-            EnergyProduction.query.delete()
-            db.session.commit()
-
             energy_production = EnergyProduction(
                 source = 'wind',
                 amount = 15,
@@ -56,9 +50,6 @@ class TestProduction:
     def test_has_source(self):
         """Test that source is required"""
         with app.app_context():
-            EnergyProduction.query.delete()
-            db.session.commit()
-
             energy_production = EnergyProduction(
                 user_id = 1,
                 amount = 15,
@@ -71,9 +62,6 @@ class TestProduction:
     def test_has_amount(self):
         """Test that amount is required"""
         with app.app_context():
-            EnergyProduction.query.delete()
-            db.session.commit()
-
             energy_production = EnergyProduction(
                 user_id = 1,
                 source = 'wind',
@@ -86,9 +74,6 @@ class TestProduction:
     def test_has_timestamp(user):
         """Test that timestamp is required"""
         with app.app_context():
-            EnergyProduction.query.delete()
-            db.session.commit()
-
             energy_production = EnergyProduction(
                 user_id = 1,
                 source = 'wind',

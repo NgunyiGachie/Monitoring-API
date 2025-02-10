@@ -9,7 +9,7 @@ class EnergyProduction(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     source = db.Column(db.String, nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, nullable=False)
 
     user = db.relationship("User", back_populates="energy_production")
 
