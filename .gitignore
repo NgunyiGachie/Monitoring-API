@@ -2,6 +2,8 @@
 __pycache__/
 *.pyc
 *.pyo
+monitoring/lib/
+
 
 # Ignore virtual environment
 venv/
