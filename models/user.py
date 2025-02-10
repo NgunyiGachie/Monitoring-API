@@ -13,24 +13,19 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
     image_url = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    created_at = db.Column(db.DateTime, nullable=False)
 
     energy_consumption = db.relationship('EnergyConsumption', back_populates='user', cascade='all, delete-orphan')
     energy_production = db.relationship('EnergyProduction', back_populates="user", cascade="all, delete-orphan")
 
-    @property
-    def password_hash(self):
-        raise AttributeError("Password hashes cannot be viewed")
 
-    @password_hash.setter
-    def password_hash(self, password):
+    def set_password(self, password):
         self._password_hash = ph.hash(password)
 
     def authenticate(self, password):
         try:
-            ph.verify(self._password_hash, password)
-            return True
-        except VerificationError:
+            return ph.verify(self._password_hash, password)
+        except:
             return False
 
     @validates("username")
