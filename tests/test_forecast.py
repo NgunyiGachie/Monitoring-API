@@ -9,10 +9,10 @@ from models.forecast import Forecast
 def setup_database():
     """Fixture to set up and clean up the database before each test."""
     with app.app_context():
+        db.drop_all()
         db.create_all()
         yield
-        db.session.rollback()
-        db.session.close()
+        db.session.remove()
 
 class TestForecast:
     """Test case for the Forecast model"""
@@ -20,9 +20,6 @@ class TestForecast:
     def test_has_attributes(self):
         """Test that the Forecast model has the required attributes"""
         with app.app_context():
-            Forecast.query.delete()
-            db.session.commit()
-
             forecast = Forecast(
                 source = 'wind',
                 forecast_amount = 20.5,
@@ -39,9 +36,6 @@ class TestForecast:
     def test_has_source(self):
         """Test that source is required"""
         with app.app_context():
-            Forecast.query.delete()
-            db.session.commit()
-
             forecast = Forecast(
                 forecast_amount = 20.5,
                 timestamp = datetime(2025, 1, 1)
@@ -53,9 +47,6 @@ class TestForecast:
     def test_has_forecast_amount(self):
         """Test that a forecast amount is required"""
         with app.app_context():
-            Forecast.query.delete()
-            db.session.commit()
-
             forecast = Forecast(
                 source = 'wind',
                 timestamp = datetime(2025, 1, 1)
@@ -67,9 +58,6 @@ class TestForecast:
     def test_has_timestamp(self):
         """Test that a timestamp is required"""
         with app.app_context():
-            Forecast.query.delete()
-            db.session.commit()
-
             forecast = Forecast(
                 source = 'wind',
                 forecast_amount = 20.5,
