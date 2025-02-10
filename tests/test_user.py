@@ -41,7 +41,7 @@ class TestUser:
             assert created_user.email == 'gachie@antony.com'
             assert created_user.image_url == 'https://example.com/images/antogachie.jpg'
             assert created_user.created_at == datetime(2025, 1, 1)
-            assert created_user.password_hash is not None
+            assert created_user.authenticate('thewerewolfmaniam')
 
     def test_requires_username(self):
         """Test that a username is required"""
@@ -87,18 +87,52 @@ class TestUser:
             with pytest.raises(IntegrityError):
                 db.session.add(user)
                 db.session.commit()
-
-    def test_requires_created_at(self):
-        """Test that created_at is required"""
+    def test_username_uniqueness(self):
+        """Test that the username is unique"""
         with app.app_context():
             User.query.delete()
             db.session.commit()
 
-            user = User(
-                username = 'antony',
-                email = 'gachie@antony.com',
-                image_url = 'https://example.com/images/antogachie.jpg',
-            )
+            user1 = User(
+                username='antony',
+                email='gachie@antony.com',
+                image_url='https://example.com/images/antogachie.jpg',
+                created_at=datetime(2025, 1, 1))
+            user1.password_hash = ph.hash('password1')
+            db.session.add(user1)
+            db.session.commit()
+
+            user2 = User(
+                username='antony',
+                email='antony@example.com',
+                image_url='https://example.com/images/antony.jpg',
+                created_at=datetime(2025, 1, 1))
+            user2.password_hash = ph.hash('password2')
             with pytest.raises(IntegrityError):
-                db.session.add(user)
+                db.session.add(user2)
+                db.session.commit()
+
+    def test_email_uniqueness(self):
+        """Test that the email is unique"""
+        with app.app_context():
+            User.query.delete()
+            db.session.commit()
+
+            user1 = User(
+                username='antony1',
+                email='gachie@antony.com',
+                image_url='https://example.com/images/antogachie.jpg',
+                created_at=datetime(2025, 1, 1))
+            user1.password_hash = ph.hash('password1')
+            db.session.add(user1)
+            db.session.commit()
+
+            user2 = User(
+                username='antony2',
+                email='gachie@antony.com',
+                image_url='https://example.com/images/antony.jpg',
+                created_at=datetime(2025, 1, 1))
+            user2.password_hash = ph.hash('password2')
+            with pytest.raises(IntegrityError):
+                db.session.add(user2)
                 db.session.commit()

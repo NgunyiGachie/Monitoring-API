@@ -12,7 +12,7 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
-    image_url = db.Column(db.String)
+    image_url = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     energy_consumption = db.relationship('EnergyConsumption', back_populates='user', cascade='all, delete-orphan')
@@ -38,7 +38,7 @@ class User(db.Model):
         if not username:
             raise AssertionError("No username provided")
         if User.query.filter(User.username == username).first():
-            raise AssertionError("Usernae is already in use")
+            raise AssertionError("Username is already in use")
         if len(username) < 5 or len(username) > 20:
             raise AssertionError("Username must be between 5 and 20 characters")
         return username
