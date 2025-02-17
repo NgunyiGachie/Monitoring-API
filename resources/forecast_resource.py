@@ -22,7 +22,8 @@ class ForecastResource(Resource):
 
             new_forecast = Forecast(
                 source=request.form['source'],
-                forecast_amount=request.form['forecast_amount']
+                forecast_amount=request.form['forecast_amount'],
+                timestamp=timestamp
             )
             db.session.add(new_forecast)
             db.session.commit()
@@ -34,4 +35,47 @@ class ForecastResource(Resource):
         except SQLAlchemyError as e:
             print (f"Error creating forecast: {e}")
             return make_response(jsonify({"error": "Unable to create forecast", "details": str(e)}, 500))
-        
+
+class ForecastByID(Resource):
+
+    def get(self, forecast_id):
+        forecast = Forecast.query.filter_by(id=forecast_id).first()
+        if forecast:
+            return make_response(forecast.to_dict(), 200)
+        return make_response(jsonify({"error": "Forecast not found"}), 404)
+
+    def patch(self, forecast_id):
+        record = Forecast.query.filter_by(id=forecast_id).first()
+        if not record:
+            return make_response(jsonify({"error": "Forecast not found"}), 404)
+
+        data = request.get_json()
+        if not data:
+            return make_response(jsonify({"error": "Invalid data format"}), 404)
+        for attr, value in data.items():
+            if attr == 'timestamp' and value:
+                try:
+                    value = datetime.fromisoformat(value)
+                except ValueError:
+                    return make_response(jsonify({"error": "Invalid date format"}), 400)
+                if hasattr(record, attr):
+                    setattr(record, attr, value)
+            try:
+                db.session.add(record)
+                db.session.commit()
+                return make_response(jsonify(record.to_dict()), 200)
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                return make_response(jsonify({"error": "Unable to update consumption", "details": str(e)}), 500)
+
+    def delete(self, forecast_id):
+        record = Forecast.query.filter_by(id=forecast_id).first()
+        if not record:
+            return make_response(jsonify({"error": "Forecast not found"}), 404)
+        try:
+            db.session.delete(record)
+            db.session.commit()
+            return make_response({"message": "Forecast successful deleted"}, 200)
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return make_response(jsonify({"error": "Unable to delete forecast", "details": str(e)}), 500)
