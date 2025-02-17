@@ -34,7 +34,7 @@ class ConsumptionResource(Resource):
             return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
         except SQLAlchemyError as e:
             print(f"Error creating energy consumption: {e}")
-            return make_response(jsonify({"error": "Unable to create energy consumption", "details": str(e)}, 500))
+            return make_response(jsonify({"error": "Unable to create energy consumption", "details": str(e)}), 500)
 
 class ConsumptionByID(Resource):
 
