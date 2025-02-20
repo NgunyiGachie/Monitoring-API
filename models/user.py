@@ -19,7 +19,12 @@ class User(db.Model):
     energy_production = db.relationship('EnergyProduction', back_populates="user", cascade="all, delete-orphan")
 
 
-    def set_password(self, password):
+    @property
+    def password(self):
+        raise AttributeError("Password is write-only")
+
+    @password.setter
+    def password(self, password):
         self._password_hash = ph.hash(password)
 
     def authenticate(self, password):

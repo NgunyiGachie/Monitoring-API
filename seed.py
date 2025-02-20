@@ -34,7 +34,7 @@ with app.app_context():
         )
     ]
     for user, password in zip(users, ['password1', 'password2']):
-        user.password_hash = ph.hash(password)
+        user.password = password
     print("adding users to the database....")
     db.session.add_all(users)
     db.session.commit()
