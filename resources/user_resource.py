@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from database import db
 from models.user import User
 
-class UseResource(Resource):
+class UserResource(Resource):
 
     def get(self):
         try:
