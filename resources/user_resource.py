@@ -20,13 +20,16 @@ class UserResource(Resource):
             created_at_str = request.form.get('created_at')
             created_at = datetime.fromisoformat(created_at_str) if created_at_str else datetime.now()
 
+            password = request.form.get('_password_hash')
+
             new_user = User(
                 username = request.form['username'],
                 email = request.form['email'],
-                _password_hash = request.form['_password_hash'],
                 image_url = request.form['image_url'],
                 created_at = created_at
             )
+            new_user.password = password
+
             db.session.add(new_user)
             db.session.commit()
             response_dict = new_user.to_dict()
