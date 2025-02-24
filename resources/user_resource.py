@@ -62,15 +62,15 @@ class UserByID(Resource):
                     value = datetime.fromisoformat(value)
                 except ValueError:
                     return make_response(jsonify({"error": "Invalid date format"}), 400)
-                if hasattr(record, attr):
-                    setattr(record, attr, value)
-                try:
-                    db.session.add(record)
-                    db.session.commit()
-                    return make_response(jsonify(record.to_dict()), 200)
-                except SQLAlchemyError as e:
-                    db.session.rollback()
-                    return make_response(jsonify({"error": "Unable to update user", "details": str(e)}), 500)
+            if hasattr(record, attr):
+                setattr(record, attr, value)
+        try:
+            db.session.add(record)
+            db.session.commit()
+            return make_response(jsonify(record.to_dict()), 200)
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return make_response(jsonify({"error": "Unable to update user", "details": str(e)}), 500)
 
     def delete(self, user_id):
         record = User.query.filter_by(id=user_id).first()
