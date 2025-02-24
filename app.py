@@ -27,7 +27,7 @@ api.add_resource(ForecastByID, "/forecasts/<int:id>", endpoint="forecasts_by_id"
 api.add_resource(ProductionResource, "/productions", endpoint="productions")
 api.add_resource(ProductionByID, "/productions/<int:id>", endpoint="productions_by_id")
 api.add_resource(UserResource, "/users", endpoint="users")
-api.add_resource(UserByID, "/users/<int:id>", endpoint="users_by_id")
+api.add_resource(UserByID, "/users/<int:user_id>", endpoint="users_by_id")
 
 if __name__ == '__main__':
     try:
