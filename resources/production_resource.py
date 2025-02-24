@@ -65,14 +65,14 @@ class ProductionByID(Resource):
                     db.session.rollback()
                     return make_response(jsonify({"error": "Unable to update energy production", "details": str(e)}), 500)
 
-        def delete(self, energy_production_id):
-            record = EnergyProduction.query.filter_by(id=energy_production_id).first()
-            if not record:
-                return make_response(jsonify({"error": "Production not found"}), 404)
-            try:
-                db.session.delete(record)
-                db.session.commit()
-                return make_response({"message": "Production successfully deleted"}, 200)
-            except SQLAlchemyError as e:
-                db.session.rollback()
-                return make_response(jsonify({"error": "Unable to delete production", "details": str(e)}), 500)
+    def delete(self, energy_production_id):
+        record = EnergyProduction.query.filter_by(id=energy_production_id).first()
+        if not record:
+            return make_response(jsonify({"error": "Production not found"}), 404)
+        try:
+            db.session.delete(record)
+            db.session.commit()
+            return make_response({"message": "Production successfully deleted"}, 200)
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return make_response(jsonify({"error": "Unable to delete production", "details": str(e)}), 500)

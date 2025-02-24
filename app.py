@@ -21,11 +21,11 @@ api = Api(app)
 
 #registering resources
 api.add_resource(ConsumptionResource, "/consumptions", endpoint="consumptions")
-api.add_resource(ConsumptionByID, "/consumptions/<int:id>", endpoint="consumptions_by_id")
+api.add_resource(ConsumptionByID, "/consumptions/<int:energy_consumption_id>", endpoint="consumptions_by_id")
 api.add_resource(ForecastResource, "/forecasts", endpoint="forecasts")
-api.add_resource(ForecastByID, "/forecasts/<int:id>", endpoint="forecasts_by_id")
+api.add_resource(ForecastByID, "/forecasts/<int:forecast_id>", endpoint="forecasts_by_id")
 api.add_resource(ProductionResource, "/productions", endpoint="productions")
-api.add_resource(ProductionByID, "/productions/<int:id>", endpoint="productions_by_id")
+api.add_resource(ProductionByID, "/productions/<int:energy_production_id>", endpoint="productions_by_id")
 api.add_resource(UserResource, "/users", endpoint="users")
 api.add_resource(UserByID, "/users/<int:user_id>", endpoint="users_by_id")
 
