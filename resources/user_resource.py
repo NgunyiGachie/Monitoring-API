@@ -20,7 +20,7 @@ class UserResource(Resource):
             created_at_str = request.form.get('created_at')
             created_at = datetime.fromisoformat(created_at_str) if created_at_str else datetime.now()
 
-            password = request.form.get('_password_hash')
+            password = request.form.get('password')
 
             new_user = User(
                 username = request.form['username'],
