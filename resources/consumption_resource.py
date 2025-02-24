@@ -19,10 +19,16 @@ class ConsumptionResource(Resource):
         try:
             timestamp_str = request.form.get('timestamp')
             timestamp = datetime.fromisoformat(timestamp_str) if timestamp_str else datetime.now()
+            user_id = request.form['user_id']
+            amount_str = request.form['amount']
+            try:
+                amount = float(amount_str)
+            except (TypeError, ValueError):
+                return make_response(jsonify({"error": "Invalid amount format"}))
 
             new_consumption = EnergyConsumption(
-                user_id=request.form['user_id'],
-                amount=request.form['amount'],
+                user_id=user_id,
+                amount=amount,
                 timestamp=timestamp
             )
             db.session.add(new_consumption)
