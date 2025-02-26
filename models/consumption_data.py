@@ -11,7 +11,7 @@ class EnergyConsumption(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False)
 
     user = db.relationship("User", back_populates="energy_consumption")
-
+ 
     @validates("amount")
     def validate_amount(self, key, value):
         if not isinstance(value, float):

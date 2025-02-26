@@ -19,10 +19,16 @@ class ForecastResource(Resource):
         try:
             timestamp_str = request.form.get('timestamp')
             timestamp = datetime.fromisoformat(timestamp_str) if timestamp_str else datetime.now()
+            source = request.form.get['source']
+            forecast_amount_str = request.form.get['forecast_amount']
+            try:
+                forecast_amount = float(forecast_amount_str)
+            except (TypeError, ValueError):
+                return make_response(jsonify({"error": "Invalid amount format"}))
 
             new_forecast = Forecast(
-                source=request.form['source'],
-                forecast_amount=request.form['forecast_amount'],
+                source=source,
+                forecast_amount=forecast_amount,
                 timestamp=timestamp
             )
             db.session.add(new_forecast)
