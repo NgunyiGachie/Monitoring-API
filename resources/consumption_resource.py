@@ -63,8 +63,8 @@ class ConsumptionByID(Resource):
                     value = datetime.fromisoformat(value)
                 except ValueError:
                     return make_response(jsonify({"error": "Invalid date format"}), 400)
-                if hasattr(record, attr):
-                    setattr(record, attr, value)
+            if hasattr(record, attr):
+                setattr(record, attr, value)
         try:
             db.session.add(record)
             db.session.commit()
