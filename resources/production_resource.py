@@ -19,11 +19,18 @@ class ProductionResource(Resource):
         try:
             timestamp_str = request.form.get('timestamp')
             timestamp = datetime.fromisoformat(timestamp_str) if timestamp_str else datetime.now()
+            user_id = request.form['user_id']
+            source = request.form['source']
+            amount_str = request.form['amount']
+            try:
+                amount = float(amount_str)
+            except (TypeError, ValueError):
+                return make_response(jsonify({"error": "Invalid amount format"}))
 
             new_production = EnergyProduction(
-                user_id=request.form['user_id'],
-                source=request.form['source'],
-                amount=request.form['amount'],
+                user_id=user_id,
+                source=source,
+                amount=amount,
                 timestamp=timestamp
             )
             db.session.add(new_production)
@@ -55,15 +62,15 @@ class ProductionByID(Resource):
                     value = datetime.fromisoformat(value)
                 except ValueError:
                     return make_response(jsonify({"error": "Invalid date format"}), 400)
-                if hasattr(record, attr):
-                    setattr(record, attr, value)
-                try:
-                    db.session.add(record)
-                    db.session.commit()
-                    return make_response(jsonify(record.to_dict()), 200)
-                except SQLAlchemyError as e:
-                    db.session.rollback()
-                    return make_response(jsonify({"error": "Unable to update energy production", "details": str(e)}), 500)
+            if hasattr(record, attr):
+                setattr(record, attr, value)
+        try:
+            db.session.add(record)
+            db.session.commit()
+            return make_response(jsonify(record.to_dict()), 200)
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return make_response(jsonify({"error": "Unable to update energy production", "details": str(e)}), 500)
 
     def delete(self, energy_production_id):
         record = EnergyProduction.query.filter_by(id=energy_production_id).first()
