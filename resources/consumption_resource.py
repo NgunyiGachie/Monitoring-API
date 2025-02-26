@@ -20,7 +20,7 @@ class ConsumptionResource(Resource):
             timestamp_str = request.form.get('timestamp')
             timestamp = datetime.fromisoformat(timestamp_str) if timestamp_str else datetime.now()
             user_id = request.form['user_id']
-            amount_str = request.form.get['amount']
+            amount_str = request.form['amount']
             try:
                 amount = float(amount_str)
             except (TypeError, ValueError):
