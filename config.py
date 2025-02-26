@@ -15,9 +15,13 @@ class Config:
     API_VERSION = "V1"
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", f"sqlite:///{os.path.join(BASE_DIR, 'energy.db')}")
+    DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{os.path.join(BASE_DIR, 'energy.db')}")
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://")
 
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'your_jwt_secret_key')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
 
@@ -40,6 +44,13 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    if DATABASE_URL:
+        if DATABASE_URL.startswith("posgres://"):
+            DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://")
+        SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    else:
+        raise ValueError("DATABASE_URL environment variable is required in production.")
 
     def __repr__(self):
         return f"<ProductionConfig>"
