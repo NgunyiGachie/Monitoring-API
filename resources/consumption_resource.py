@@ -65,13 +65,13 @@ class ConsumptionByID(Resource):
                     return make_response(jsonify({"error": "Invalid date format"}), 400)
                 if hasattr(record, attr):
                     setattr(record, attr, value)
-            try:
-                db.session.add(record)
-                db.session.commit()
-                return make_response(jsonify(record.to_dict()), 200)
-            except SQLAlchemyError as e:
-                db.session.rollback()
-                return make_response(jsonify({"error": "Unable to update consumption", "details": str(e)}), 500)
+        try:
+            db.session.add(record)
+            db.session.commit()
+            return make_response(jsonify(record.to_dict()), 200)
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return make_response(jsonify({"error": "Unable to update consumption", "details": str(e)}), 500)
 
     def delete(self, energy_consumption_id):
         record = EnergyConsumption.query.filter_by(id=energy_consumption_id).first()

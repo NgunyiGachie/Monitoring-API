@@ -54,7 +54,6 @@ class ForecastByID(Resource):
         record = Forecast.query.filter_by(id=forecast_id).first()
         if not record:
             return make_response(jsonify({"error": "Forecast not found"}), 404)
-
         data = request.get_json()
         if not data:
             return make_response(jsonify({"error": "Invalid data format"}), 404)
@@ -64,15 +63,15 @@ class ForecastByID(Resource):
                     value = datetime.fromisoformat(value)
                 except ValueError:
                     return make_response(jsonify({"error": "Invalid date format"}), 400)
-                if hasattr(record, attr):
-                    setattr(record, attr, value)
-            try:
-                db.session.add(record)
-                db.session.commit()
-                return make_response(jsonify(record.to_dict()), 200)
-            except SQLAlchemyError as e:
-                db.session.rollback()
-                return make_response(jsonify({"error": "Unable to update consumption", "details": str(e)}), 500)
+            if hasattr(record, attr):
+                setattr(record, attr, value)
+        try:
+            db.session.add(record)
+            db.session.commit()
+            return make_response(jsonify(record.to_dict()), 200)
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return make_response(jsonify({"error": "Unable to update consumption", "details": str(e)}), 500)
 
     def delete(self, forecast_id):
         record = Forecast.query.filter_by(id=forecast_id).first()
